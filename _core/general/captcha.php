@@ -15,7 +15,9 @@
 
 class Captcha {
     function isValid() {
-        if (RECAPTCHA) {
+        global $config;
+
+        if ($config['captcha']['recaptcha']) {
             return $this->validate_recaptcha();
         } else {
             return $this->validate();
@@ -23,9 +25,11 @@ class Captcha {
     }
     
     private function validate_recaptcha() {
+        global $config;
+
         //http://stackoverflow.com/a/6609181
         $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $data = array('secret' => RECAPTCHA_SECRET, 'response' => $_POST['g-recaptcha-response'], 'remoteip' => $_SERVER['REMOTE_ADDR']);
+        $data = array('secret' => $config['captcha']['secret'], 'response' => $_POST['g-recaptcha-response'], 'remoteip' => $_SERVER['REMOTE_ADDR']);
 
         $options = array(
             'http' => array(

@@ -96,12 +96,6 @@ define(MAX_IMGRES, 300);    //Maximum thread bumps from images.
 define(S_OMITT_NUM, 5);     //number of posts to display in each thread on the index.
 //Is this even referenced?! define(MANTHUMBS, '1');                                 //Display thumbnails in manager panel- you may want it off if you have too many images (1: yes  0: no)
 
-//Captcha
-define(BOTCHECK, false);    //Use CAPTCHAs
-define(RECAPTCHA, false);   //Use reCaptcha instead of the default captcha. Requires the SITEKEY and SECRET to be set below.
-define(RECAPTCHA_SITEKEY, "");//reCaptcha public key.
-define(RECAPTCHA_SECRET, "");//reCaptcha secret key.
-
 //Images
 define(DUPE_CHECK, true); //whether or not to check for duplicate images
 define(MAX_KB, 2048); //Maximum upload size in KB

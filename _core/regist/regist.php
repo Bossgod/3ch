@@ -8,11 +8,13 @@ Eventually rewrite this.
 
 //Check prereq conditions for post processing
 
+global $config;
+
 $upfile_name = $_FILES["upfile"]["name"];
 $upfile = $_FILES["upfile"]["tmp_name"];
 
 //Captcha check
-if (BOTCHECK === true && !valid('moderator')) {
+if ($config['captcha']['enabled'] === true && !valid('moderator')) {
     require_once(CORE_DIR . '/general/captcha.php');
     $captcha = new Captcha;
 
