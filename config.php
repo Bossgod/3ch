@@ -1,4 +1,17 @@
 <?php
+$config = [
+    'captcha' => [
+        'enabled' => false,   //Use CAPTCHAs
+        'recaptcha' => false, //Use reCaptcha instead of the default captcha. Requires the 'sitekey' and 'secret' to be set below.
+        'sitekey' => '',      //reCaptcha public key.
+        'secret' => ''        //reCaptcha secret key.
+    ],
+    'webm' => [
+        'allow_audio' => false, //If true, allows WebMs containing an audio stream.
+        'max_duration' => 60    //The maximum duration allowed in seconds.
+    ]
+];
+
 /*
     General, board-specific settings.
 */
@@ -42,7 +55,7 @@ define(DATE_FORMAT, 'm/d/y'); //Formatting for the date in each post, see http:/
 
 
 /*
-	Specialized board settings - a board with specific purpose 
+	Specialized board settings - a board with specific purpose
 */
 
 define(GIF_ONLY, false); //GIF upload only imageboard.
@@ -92,10 +105,6 @@ define(RECAPTCHA_SECRET, "");//reCaptcha secret key.
 //Images
 define(DUPE_CHECK, true); //whether or not to check for duplicate images
 define(MAX_KB, 2048); //Maximum upload size in KB
-
-//WebM
-define(ALLOW_AUDIO, false); //If true, allows WebMs containing an audio stream.
-define(MAX_DURATION, 60);   //The maximum duration allowed in seconds.
 
 //RePod's JS suite
 define(USE_JS_SETTINGS, 1); //Include the JS suite's settings - enables user side settings
