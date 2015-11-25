@@ -161,7 +161,7 @@ https://github.com/spootTheLousy/saguaro/wiki/Board-SQL-Table-relationship
 */
 
 define(SQLLOG, PREFIX);            //Table for posting information.
-define(SQLBANLOG, PREFIX.'_ban');  //Table for ban information.
+define(SQLBANLOG, 'bans');  //Table for ban information.
 define(SQLMODSLOG, PREFIX.'_mod'); //Table for mod information (authentication).
 define(SQLDELLOG, PREFIX.'_del');  //Table for deleted information.
 
