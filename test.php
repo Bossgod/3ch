@@ -16,7 +16,7 @@ if (is_file($lockout)) {
 } else {
     //These should be the only things changed without knowing what you're doing, everything that uses them is automated.
     $defaults = [ //Default accounts.
-                    ['name' => 'admin', 'pass' => 'guest', 'priv' => 'janitor_board,moderator,admin,manager', 'deny' => 'none']
+                    ['name' => 'admin', 'pass' => 'badmin', 'priv' => 'janitor_board,moderator,admin,manager', 'deny' => 'none']
                 ];
 
     //Point of no return. Casual users shouldn't go past here.
