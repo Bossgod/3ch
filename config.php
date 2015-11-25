@@ -4,8 +4,8 @@
 */
 
 define(LANGUAGE, 'en-us');                      //Language to use. See "_core/lang/" folder for available languages.
-define(TITLE, 'Saguaro Imageboard!');           //Name of the board.
-define(S_HEADSUB, 'No artificial sweeteners!'); //Board subtitle.
+define(TITLE, '3chan);           //Name of the board.
+define(S_HEADSUB, '3chan.ml'); //Board subtitle.
 define(S_DESCR, 'An imageboard powered by saguaro'); //meta description for this board
 
 
