@@ -27,8 +27,8 @@ define(PREFIX, 'imgboard'); //Prefix to automatically use for the database table
 */
 
 define(PANEL_PASS, 'CHANGEME');  //Staff action key  (CHANGE THIS YO)
-define(SITE_ROOT, 'example.com');//Site domain.
-define(BOARDLIST, '');           //the text file that contains your boardlist, displayed at both header and footer [a/b/c/][d/e/f/] etc.
+define(SITE_ROOT, '3chan.ml');//Site domain.
+define(BOARDLIST, 'boardlist.txt');           //the text file that contains your boardlist, displayed at both header and footer [a/b/c/][d/e/f/] etc.
 define(GLOBAL_NEWS, 'CHANGEME'); //Absolute html path to your global board news file. Appears below post form, above index body
 define(SALTFILE, 'salt');        //Name of the salt file, do not add a file extension for security
 
@@ -115,7 +115,7 @@ define(USE_EXTRAS, true);       //Automatically include all .js files in JS_PATH
 define(CSS1, '/stylesheets/saguaba.css');    //location of the first stylesheet.
 define(CSS2, '/stylesheets/sagurichan.css'); //location of the second stylesheet.
 define(CSS3, '/stylesheets/tomorrow.css');   //location of the third stylesheet.
-//define(CSS4, '/stylesheets/CHANGEME.css');   //location of the fourth stylesheet.
+define(CSS4, '/stylesheets/neutron-beta.css');   //location of the fourth stylesheet.
 
 define(EXTRA_SHIT, ''); //Any extra javascripts you want to include inside the <head>
 
