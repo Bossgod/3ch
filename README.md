@@ -7,7 +7,7 @@
 This has been cobbled together from stuff I myself have written and the contributions of others, named in the line I copied and pasted from the old readme just below this one:		
 *"Special thanks to !KNs1o0VDv6, Glas, Anonymous from vchan, RePod, and anyone who actually uses this."*
 
-#Why use 3chan?
+#Why use 3chan's version?
 3chan has all the thigs saguaro has + some edits that might be useful?
 Saguaro Features:
 - Mobile browser support
@@ -31,6 +31,7 @@ Saguaro Features:
 - [The Wiki](//github.com/spootTheLousy/saguaro/wiki)
 - [API Documentation](//github.com/spootTheLousy/saguaro/wiki/API-Documentation) 
 - #saguaroimgboard @ irc.rizon.net
+- Feel free to create a issue if you are having any problems.
 
 #Testing, Development, and Contributing
 - Setting up a basic [Development Environment](//github.com/spootTheLousy/saguaro/wiki/Development-Environment)
