@@ -18,8 +18,8 @@ define(SQLUSER, 'username');
 define(SQLPASS, 'password');
 define(SQLHOST, 'localhost');
 
-define(SQLDB, 'saguaro');   //Database used by image board.
-define(PREFIX, 'imgboard'); //Prefix to automatically use for the database tables.
+define(SQLDB, 'imgboard');   //Database used by image board.
+define(PREFIX, 'boarddir'); //Prefix to automatically use for the database tables. (You should set the prefix to the board dir this file is stored in.)
 
 
 /*
@@ -60,8 +60,8 @@ define(SHOW_BLOTTER, false);      //Experimental. Added to the top of each board
 define(BLOTTER_PATH, 'CHANGEME'); //Experimental. Absolute html path to your blotter file, this feature is experimental and still is not fully functional.
 
 // Post & Thread
-define(USE_BBCODE, false);  //Use BBcode
-define(DICE_ROLL, false);   //Allow users to roll /dice in the name field
+define(USE_BBCODE, true);  //Use BBcode
+define(DICE_ROLL, false);   //Allow users to roll /dice in the name field [BROKEN ATM]
 define(FORTUNE_TRIP, false); //Allows users to recieve a #fortune in the namefield
 
 define(FORCED_ANON, false); //Force anonymous on this board.
@@ -98,12 +98,12 @@ define(MAX_DURATION, 60);   //The maximum duration allowed in seconds.
 
 //RePod's JS suite. The majority of these should remain disabled until the suite is updated (as of 11-14-15)
 define(USE_JS_SETTINGS, true);  //Include the JS suite's settings - enables user side configuration.
-define(USE_IMG_HOVER, true);
+define(USE_IMG_HOVER, false);
 define(USE_IMG_TOOLBAR, false); //Iage search toolbar
 define(USE_IMG_EXP, true);      //Image expansion
 define(USE_UTIL_QUOTE, false);  //Utility quotes1
 define(USE_INF_SCROLL, false);  //Infinite scroll
-define(USE_UPDATER, false);     //Thread updater
+define(USE_UPDATER, true);     //Thread updater (might work?)
 define(USE_THREAD_STATS, false);
 define(USE_EXTRAS, true);       //Automatically include all .js files in JS_PATH/extra/
 
@@ -135,10 +135,10 @@ define(ADS3, '<center>ads ads ads</center>'); //advertisement code (bottom)
 /*
     Security settings.
 
-    The defaults here are recommended.
+    It is recommended that you set SECURE_LOGIN to "true".
 */
 
-define(SECURE_LOGIN, true); //Enable CAPTCHA on staff login page.
+define(SECURE_LOGIN, false); //Enable CAPTCHA on staff login page, Disabled by default on the 3ch version.
 
 
 /*
@@ -149,7 +149,7 @@ define(SECURE_LOGIN, true); //Enable CAPTCHA on staff login page.
 */
 
 //Debug mode can display sensitive data that could be exploited, which is a huge security concern.
-//This should be left off except when trying to find problems.
+//Leave this as false unless you are testing stuff on a private board.
 define(DEBUG_MODE, false);
 
 /*
