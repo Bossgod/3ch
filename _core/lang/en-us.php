@@ -19,7 +19,8 @@ if (GIF_ONLY)   $temp = '<ul><li>Supported file types are: GIF</li>';
 if (USE_BBCODE) $temp .= '<li><b>BBCode</b> and <b>Markdown</b> are enabled for this board.';
 $S_RULES = $temp . '<li>Maximum file size allowed is '.MAX_KB.' KB.</li>
             <li>Images greater than '.MAX_W.'x'.MAX_H.' pixels will be thumbnailed.</li>
-            <li>Images smaller than '.MIN_W.'x'.MIN_H.' pixels will be refused.</li></ul>';                                             //Prints rules under posting section
+            <li>Images smaller than '.MIN_W.'x'.MIN_H.' pixels will be refused.</li></ul>
+            <li>Please check out the <a href="http://3chan.ml/rules.php">Rules</a> and <a href="http://3chan.ml/faq.php">FAQ</a> before posting.</li></ul>';  //Prints rules under posting section
 $S_REPORTERR = 'Error: Cannot find reply.';                     //Returns error when a reply (res) cannot be found
 $S_THUMB = '';                                                  //Prints instructions for viewing real source
 $S_PICNAME = 'File: ';                                         //Prints text before upload name/link
@@ -75,6 +76,7 @@ $S_BADDELPASS = 'Error: Password incorrect.';                   //Returns error 
 $S_WRONGPASS = 'Error: Username or password invalid.';          //Returns error for wrong password (when trying to access Manager modes)
 $S_RETURNS = 'Return';                                          //Returns to HTML file instead of PHP--thus no log/SQLDB update occurs
 $S_LOGUPD = 'Update';                                           //Updates the log/SQLDB by accessing the PHP file
+$S_POSTFORMBUTTON = "  [ <a href='#' onclick=\"toggle_visibility('adminForm');\" style='color:white;text-align:center;' >Toggle Post Form</a> ]";                 //Might be used
 $S_MANAMODE = "  [ <a href='#' onclick=\"toggle_visibility('adminForm');\" style='color:white;text-align:center;' >Toggle Admin Post Form</a> ]";                                   //Prints heading on top of Manager page
 $S_MANAREPDEL = 'Management Panel';                             //Defines Management Panel radio button--allows the user to view the management panel (overview of all posts)
 $S_MANAPOST = 'Manager Post';                                   //Defines Manager Post radio button--allows the user to post using HTML code in the comment box
