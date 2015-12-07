@@ -1,7 +1,7 @@
 @import url("mobile.css") (max-width: 480px);
 
 body {
-    background: #efe7f8 url(http://3chan.ml/global/fade-ping.jpg) top center repeat-x;
+    background: #efe7f8 url(http://3chan.ml/global/fade-pink.jpg) top center repeat-x;
     font-size: 10pt;
     color: #000000;
     font-family: Arial, Helvetica, sans-serif;
@@ -102,15 +102,15 @@ hr {
     /**/
 }
 .postblock {
-    background: #EE88E7;
-    color: #FF31E8;
+    background: #FA90BF; 
+    color: #FF51DA;
     font-weight: bold;
-    border: 1px solid #FF31E8;
+    border: 1px solid #FF51DA;
     padding: 4px;
 }
 .postblock {
-    background: #EEAA88;
-    color: FF51DA;
+    background: #FA90BF;
+    color: #FF51DA; 
     border: 1px solid #FF51DA;
     padding: 4px;
 }
@@ -142,7 +142,7 @@ hr {
 .postTable.head {
     border-collapse: collapse;
     background: #AF0A0F;
-    color: #FFFFEE;
+    color: #FFEEFF;
     font-size: 14px;
     padding: 0px;
     text-align: center;
@@ -231,9 +231,9 @@ hr {
     padding-left: 20px;
 }
 .pages {
-    border:1px solid #800000;
-    background: rgba(240,224,214,0.85); /*#F0E0D6*/
-    color:#800;
+    border:1px solid #FF4CE8;
+    background: rgba(255,112,244,0.85); /*#FF70F4*/
+    color:#FF4CE8;
 }
 .pages td {
     border:none;
