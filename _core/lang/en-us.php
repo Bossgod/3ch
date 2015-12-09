@@ -19,7 +19,7 @@ if (GIF_ONLY)   $temp = '<ul><li>Supported file types are: GIF</li>';
 if (USE_BBCODE) $temp .= '<li><b>BBCode</b> and <b>Markdown</b> are enabled for this board.';
 $S_RULES = $temp . '<li>Maximum file size allowed is '.MAX_KB.' KB.</li>
             <li>Images greater than '.MAX_W.'x'.MAX_H.' pixels will be thumbnailed.</li>
-            <li>Images smaller than '.MIN_W.'x'.MIN_H.' pixels will be refused.</li></ul>
+            <li>Images smaller than '.MIN_W.'x'.MIN_H.' pixels will be refused.</li>
             <li>Please check out the <a href="http://3chan.ml/rules.php">Rules</a> and <a href="http://3chan.ml/faq.php">FAQ</a> before posting.</li></ul>';  //Prints rules under posting section
 $S_REPORTERR = 'Error: Cannot find reply.';                     //Returns error when a reply (res) cannot be found
 $S_THUMB = '';                                                  //Prints instructions for viewing real source
