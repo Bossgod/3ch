@@ -29,7 +29,7 @@ class Head {
             $boardTitle = "<div class='boardTitle'>" . TITLE . "</div>" . $headSub;
             $headSub .= '<div class="boardSubtitle">' . S_HEADSUB . '</div><hr>';
             if (SHOWTITLETXT == 2)  //you cannot stop me repod i am invincible
-                $boardTitle ="<div class='boardTitle'/>/" . BOARD_DIR . "/ - " . TITLE . "</div>";
+                $boardTitle ="<div class='boardTitle'/>/" . BOARD_DIR . "/ - " . TITLE . "</div>"; //change this if /www/
         }
         $bannerImg .= (SHOWTITLEIMG) ? '<img class="bannerImg" src="' . TITLEIMG . '" onclick="this.src=this.src;" alt="' . TITLE . '" /><br>' : '';
 
