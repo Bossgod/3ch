@@ -33,8 +33,11 @@ if (valid('moderator')) {
 }
 
 if ($moderator) {
-    if (isset($_POST['isSticky']))
+    if (isset($_POST['isSticky'])) {
         $stickied = 1;
+        if (isset($_POST['eventSticky'])) //Experimental feature.
+            $stickied = 2;
+    }
     if (isset($_POST['isLocked']))
         $locked = 1;
 }
@@ -51,15 +54,15 @@ $tim  = $time . substr(microtime(), 2, 3);
 require_once('process/upload_file.php'); //Process the uploaded file.
 
 //The last result number
-$lastno = mysql_result($mysql->query("select max(no) from " . SQLLOG), 0, 0);
+$lastno = $mysql->result($mysql->query("select max(no) from " . SQLLOG), 0, 0);
 
 // Number of log lines
 if (!$result = $mysql->query("select no,ext,tim from " . SQLLOG . " where no<=" . ($lastno - LOG_MAX))) {
     echo S_SQLFAIL;
 } else {
-    while ($resrow = mysql_fetch_row($result)) {
+    while ($resrow = $mysql->fetch_row($result)) {
         list($dno, $dext, $dtim) = $resrow;
-        if (!mysql_query("delete from " . SQLLOG . " where no=" . $dno)) {
+        if (!$mysql->query("delete from " . SQLLOG . " where no=" . $dno)) {
             echo S_SQLFAIL;
         }
         if ($dext) {
@@ -69,7 +72,7 @@ if (!$result = $mysql->query("select no,ext,tim from " . SQLLOG . " where no<=" 
                 unlink(THUMB_DIR . $dtim . 's.jpg');
         }
     }
-    mysql_free_result($result);
+    $mysql->free_result($result);
 }
 
 $find  = false;
@@ -78,8 +81,8 @@ if ($resto) {
     if (!$result = $mysql->query("select * from " . SQLLOG . " where root>0 and no=$resto")) {
         echo S_SQLFAIL;
     } else {
-        $find = mysql_fetch_row($result);
-        mysql_free_result($result);
+        $find = $mysql->fetch_row($result);
+        $mysql->free_result($result);
     }
     if (!$find)
         error(S_NOTHREADERR, $dest);
@@ -92,12 +95,9 @@ if (!$com)
 if (!$sub)
     $sub = S_ANOTITLE;
 
-// Form content check
-$clean = $sanitize->process($name, $com, $sub, $email, $resto, $url, $dest, $moderator);
-
 if (!$resto && !$textonly && !is_file($dest) && !$moderator)
     error(S_NOPIC, $dest);
-if (!$clean['com'] && !is_file($dest) && !$moderator)
+if (!$com && !is_file($dest) && !$moderator)
     error(S_NOTEXT, $dest);
 
 // No, path, time, and url format
@@ -123,10 +123,7 @@ $youbi  = array(
 );
 $yd     = $youbi[date("w", $time)];
 
-if (SHOW_SECONDS == 1) 
-    $now = date("m/d/y", $time) . "(" . (string) $yd . ")" . date("H:i:s", $time);
-else 
-    $now = date("m/d/y", $time) . "(" . (string) $yd . ")" . date("H:i", $time);
+$now = (SHOW_SECONDS == 1)  ? date("m/d/y", $time) . "(" . (string) $yd . ")" . date("H:i:s", $time) : date("m/d/y", $time) . "(" . (string) $yd . ")" . date("H:i", $time);
 
 if (DISP_ID) {
     //$rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
@@ -134,14 +131,14 @@ if (DISP_ID) {
     $color  = "inherit"; // Until unique IDs between threads get sorted out
     //Leave these quotes escaped for mysql
     $idhtml = "<span class=\"posteruid\" id=\"posterid\" style=\"background-color:" . $color . "; border-radius:10px;font-size:8pt;\" />";
-    mysql_real_escape_string($idhtml);
+    $mysql->escape_string($idhtml);
 
-    if ($clean['email'] && DISP_ID == 1) {
+    if ($email && DISP_ID == 1) {
         $now .= " (ID:" . $idhtml . " Heaven </span>)";
     } else {
         if (!$resto) {
         //holy hell there has to be a better way to do this. i swear ill think of it soon
-        $idsalt = mysql_result(mysql_call("select max(no) from " . SQLLOG), 0, 0); 
+        $idsalt = $mysql->result($mysql->query("select max(no) from " . SQLLOG), 0, 0); 
         $idsalt = $idsalt + 1;
         } else {
             $idsalt = $resto;
@@ -156,20 +153,30 @@ if (COUNTRY_FLAGS && file_exists('geoiploc.php')) {
     $now .= " <img src=" . CSS_PATH . "flags/" . strtolower($country) . ".png /> ";
 }
 
-$c_name  = $clean['name'];
-$c_email = $clean['email'];
+$c_name  = $name;
+$c_email = $email;
 
+if (strpos($email,'sage') !== false || strpos($email,'nokosage') !== false)
+    $sageThis = true;
+
+if (strpos($email,'nokosage') !== false || strpos($email,'noko') !== false)
+    $noko = true;
+
+require_once("tripcode.php"); //This DOES the trip processing.
+
+//Text sanitizing
 //Text plastic surgery (rorororor)
-$clean['email'] = $sanitize->CleanStr($clean['email'], 0); //Don't allow moderators to fuck with this
-$clean['email'] = preg_replace("[\r\n]", "", $clean['email']);
-$clean['sub']   = $sanitize->CleanStr($clean['sub'], 0); //Or this
-$clean['sub']   = preg_replace("[\r\n]", "", $clean['sub']);
+$email = $sanitize->CleanStr($email, 0); //Don't allow moderators to fuck with this
+$email = preg_replace("[\r\n]", "", $email);
+$sub   = $sanitize->CleanStr($sub, 0); //Or this
+$sub   = preg_replace("[\r\n]", "", $sub);
 $url   = $sanitize->CleanStr($url, 0); //Or this
 $url   = preg_replace("[\r\n]", "", $url);
 $resto = $sanitize->CleanStr($resto, 0); //Or this
 $resto = preg_replace("[\r\n]", "", $resto);
-$clean['com']   = $sanitize->CleanStr($clean['com'], $moderator); //But they can with this.
+$com   = $sanitize->CleanStr($com, $moderator); //But they can with this.
 
+$clean = $sanitize->process($name, $com, $sub, $email, $resto, $url, $dest, $moderator);
 
 if (USE_BBCODE === true) {
     require_once(CORE_DIR . '/general/text_process/bbcode.php');
@@ -178,26 +185,14 @@ if (USE_BBCODE === true) {
     $clean['com'] = $bbcode->format($clean['com']);
 }
 
-/*if (SPOILERS == 1 && $spoiler) {
-    $clean['sub'] = "SPOILER<>$clean['sub']";
-}*/
-
-require_once("tripcode.php"); //This DOES the trip processing.
-
-$noko = 1;
-if (stripos($clean['email'], 'sage') || stripos($clean['email'], 'nokosage'))
-    $is_sage = true;
-elseif (stripos($clean['email'], 'nonoko')) {
-    $is_sage = false;
-    $noko = 0;
-} else 
-    $is_sage = false;
+if (SPOILERS && $spoiler)
+    $clean['sub'] = "SPOILER<>" . $clean['sub'];
 
 if ($moderator && isset($_POST['showCap'])) {
     if ($moderator == 1)
-        $clean['name'] = '<span class="cap moderator" >' . $clean['name'] . ' ## Mod </span> <img src="http://3chan.ml/static/mod-icon.png" alt="Mod Icon" title="This user is a 3chan Modorator." style="margin-bottom: -3px;"/> '; 
+        $clean['name'] = '<span class="cap moderator" >' . $clean['name'] . ' ## Mod </span>';
     if ($moderator == 2)
-        $clean['name'] = '<span class="cap admin" >' . $clean['name'] . ' ## Admin </span> <img src="http://3chan.ml/static/admin-icon.png" alt="Admin Icon" title="This user is a 3chan Administrator." style="margin-bottom: -3px;"/>'; 
+        $clean['name'] = '<span class="cap admin" >' . $clean['name'] . ' ## Admin </span>';
     if ($moderator == 3)
         $clean['name'] = '<span class="cap manager" >' . $clean['name'] . ' ## Manager  </span>';
 }
@@ -215,86 +210,103 @@ $may_flood = ($moderator >= 1);
 if (!$may_flood) {
     if ($clean['com']) {
         // Check for duplicate comments
-        $query  = "select count(no)>0 from " . SQLLOG . " where com='" . mysql_real_escape_string($clean['com']) . "' " . "and host='" . mysql_real_escape_string($host) . "' " . "and time>" . ($time - RENZOKU_DUPE);
+        $query  = "select count(no)>0 from " . SQLLOG . " where com='" . $mysql->escape_string($clean['com']) . "' " . "and host='" . $mysql->escape_string($host) . "' " . "and time>" . ($time - RENZOKU_DUPE);
         $result = $mysql->query($query);
-        if (mysql_result($result, 0, 0))
+        if ($mysql->result($result, 0, 0))
             error(S_RENZOKU, $dest);
-        mysql_free_result($result);
+        $mysql->free_result($result);
     }
 
     if (!$has_image) {
         // Check for flood limit on replies
-        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU) . " " . "and host='" . mysql_real_escape_string($host) . "' and resto>0";
+        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU) . " " . "and host='" . $mysql->escape_string($host) . "' and resto>0";
         $result = $mysql->query($query);
-        if (mysql_result($result, 0, 0))
+        if ($mysql->result($result, 0, 0))
             error(S_RENZOKU, $dest);
-        mysql_free_result($result);
+        $mysql->free_result($result);
     }
 
-    if ($is_sage) {
+    if ($sageThis) {
         // Check flood limit on sage posts
-        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU_SAGE) . " " . "and host='" . mysql_real_escape_string($host) . "' and resto>0 and permasage=1";
+        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU_SAGE) . " " . "and host='" . $mysql->escape_string($host) . "' and resto>0 and permasage=1";
         $result = $mysql->query($query);
-        if (mysql_result($result, 0, 0))
+        if ($mysql->result($result, 0, 0))
             error(S_RENZOKU, $dest);
-        mysql_free_result($result);
+        $mysql->free_result($result);
     }
 
     if (!$resto) {
         // Check flood limit on new threads
-        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU3) . " " . "and host='" . mysql_real_escape_string($host) . "' and root>0"; //root>0 == non-sticky
+        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU3) . " " . "and host='" . $mysql->escape_string($host) . "' and root>0"; //root>0 == non-sticky
         $result = $mysql->query($query);
-        if (mysql_result($result, 0, 0))
+        if ($mysql->result($result, 0, 0))
             error(S_RENZOKU3, $dest);
-        mysql_free_result($result);
+        $mysql->free_result($result);
     }
 }
 
 // Upload processing
 if ($has_image) {
     if (!$may_flood) {
-        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU2) . " " . "and host='" . mysql_real_escape_string($host) . "' and resto>0";
+        $query  = "select count(no)>0 from " . SQLLOG . " where time>" . ($time - RENZOKU2) . " " . "and host='" . $mysql->escape_string($host) . "' and resto>0";
         $result = $mysql->query($query);
-        if (mysql_result($result, 0, 0))
+        if ($mysql->result($result, 0, 0))
             error(S_RENZOKU2, $dest);
-        mysql_free_result($result);
+        $mysql->free_result($result);
     }
 
     //Duplicate image check
     if (DUPE_CHECK) {
         $result = $mysql->query("select no,resto from " . SQLLOG . " where md5='$md5'");
-        if (mysql_num_rows($result)) {
-            list($dupeno, $duperesto) = mysql_fetch_row($result);
+        if ($mysql->num_rows($result)) {
+            list($dupeno, $duperesto) = $mysql->fetch_rows($result);
             if (!$duperesto)
                 $duperesto = $dupeno;
             error('<a href="' . DATA_SERVER . BOARD_DIR . "/res/" . $duperesto . PHP_EXT . '#' . $dupeno . '">' . S_DUPE . '</a>', $dest);
         }
-        mysql_free_result($result);
+        $mysql->free_result($result);
     }
 }
 
 $rootqu = $resto ? "0" : "now()";
+
 if ($stickied)
     $rootqu = '20270727070707';
+
 //Bump processing
-if ($resto) { //sage or age action
-    $resline  = $mysql->query("select count(no) from " . SQLLOG . " where resto=" . $resto);
-    $countres = mysql_result($resline, 0, 0);
-    mysql_free_result($resline);
-    $resline = $mysql->query("select sticky,permasage from " . SQLLOG . " where no=" . $resto);
-    list($sticky, $permasage) = mysql_fetch_row($resline);
-    mysql_free_result($resline);
-    if ((stripos($clean['email'], 'sage') === FALSE && $countres < MAX_RES && $sticky != "1" && $permasage != "1") || ($admin && $age && $sticky != "1")) {
-        $query = "update " . SQLLOG . " set root=now() where no=$resto"; //age
-        $mysql->query($query);
-    }
+if ($resto) { 
+    $countres = $mysql->result("SELECt COUNT(no) FROM " . SQLLOG . " where resto=" . $resto, 0, 0);
+    $stat = $mysql->fetch_assoc("SELECT sticky,permasage FROM " . SQLLOG . " WHERE no=" . $resto);
+    if (!$sageThis && $countres < MAX_RES && !$stat['sticky'] && !$stat['permasage']) //|| ($admin && $age && $sticky < "0"))
+        $mysql->query("UPDATE " . SQLLOG . " SET root=now() WHERE  no='$resto'"); //Bump
 }
 
 //Main insert
-$query = "insert into " . SQLLOG . " (now,name,email,sub,com,host,pwd,ext,w,h,tn_w,tn_h,tim,time,md5,fsize,fname,sticky,permasage,locked,root,resto) values (" . "'" . $now . "'," . "'" . mysql_real_escape_string($clean['name']) . "'," . "'" . mysql_real_escape_string($clean['email']) . "'," . "'" . mysql_real_escape_string($clean['sub']) . "'," . "'" . mysql_real_escape_string($clean['com']) . "'," . "'" . mysql_real_escape_string($host) . "'," . "'" . mysql_real_escape_string($pass) . "'," . "'" . $ext . "'," . (int) $W . "," . (int) $H . "," . (int) $TN_W . "," . (int) $TN_H . "," . "'" . $tim . "'," . (int) $time . "," . "'" . $md5 . "'," . (int) $fsize . "," . "'" . mysql_real_escape_string($upfile_name) . "'," . (int) $stickied . "," . (int) $permasage . "," . (int) $locked . "," . $rootqu . "," . (int) mysql_real_escape_string($resto) . ")";
+$query = "INSERT INTO " . SQLLOG . " (now,name,email,sub,com,host,pwd,ext,w,h,tn_w,tn_h,tim,time,md5,fsize,fname,sticky,permasage,locked,root,resto) VALUES (" . "'" . $now . "',"
+ . "'" . $mysql->escape_string($clean['name']) . "'," 
+ . "'" . $mysql->escape_string($clean['email']) . "',"
+ . "'" . $mysql->escape_string($clean['sub']) . "'," 
+ . "'" . $mysql->escape_string($clean['com']) . "'," 
+ . "'" . $mysql->escape_string($host) . "'," 
+ . "'" . $mysql->escape_string($pass) . "'," 
+ . "'" . $ext . "',"
+ . (int) $W . ","
+ . (int) $H . ","
+ . (int) $TN_W . "," 
+ . (int) $TN_H . "," 
+ . "'" . $tim . "',"
+ . (int) $time . ","
+ . "'" . $md5 . "',"
+ . (int) $fsize . ","
+ . "'" . $mysql->escape_string($upfile_name) . "',"
+ . (int) $stickied . ","
+ . (int) $permasage . ","
+ . (int) $locked . ","
+ . $rootqu . ","
+ . (int) $mysql->escape_string($resto) . ")";
 
 if (!$result = $mysql->query($query)) {
-    echo S_SQLFAIL;
+    echo E_REGFAILED;
 } //post registration
 
 $cookie_domain = '.' . SITE_ROOT . '';
@@ -309,12 +321,19 @@ setcookie("" . SITE_ROOT . "_pass", $c_pass, time() + 7 * 24 * 3600, '/', $cooki
 if (!$resto) {
     require_once('prune_old.php');
     prune_old();
+} else {//Event stickies
+    $eventStick = $mysql->query("SELECT sticky FROM " . SQLLOG . " WHERE no='$resto' AND sticky=2");
+    if ($mysql->num_rows($eventStick) > 0) {
+        require_once('prune_old.php');
+        pruneThread($resto);
+    }
+    $mysql->free_result($eventStick);
 }
 
 // thumbnail
 if ($has_image) {
     rename($dest, $path . $tim . $ext);
-    if (USE_THUMB) {
+    if (USE_THUMB) { //We'll still make the thumbnail even if its a spoiler image for user extensions.
         require_once("thumb.php");
         $tn_name = thumb($path, $tim, $ext, $resto);
         if (!$tn_name && $ext != ".pdf") {
@@ -329,21 +348,20 @@ $static_rebuild = defined("STATIC_REBUILD") && (STATIC_REBUILD == 1);
 if (!$result = $mysql->query("select max(no) from " . SQLLOG)) {
     echo S_SQLFAIL;
 }
-$hacky    = mysql_fetch_array($result);
+$hacky    = $mysql->fetch_array($result);
 $insertid = (int) $hacky[0];
-mysql_free_result($result);
+$mysql->free_result($result);
 
 $deferred = false;
 // update html
-if ($resto) {
+if ($resto)
     $deferred = $my_log->update($resto, $static_rebuild);
-} else {
+else 
     $deferred = $my_log->update($insertid, $static_rebuild);
-}
 
 if ($noko && !$resto) {
     $redirect = DATA_SERVER . BOARD_DIR . "/" . RES_DIR . $insertid . PHP_EXT;
-} else if ($noko == 1) {
+} else if ($noko) {
     $redirect = DATA_SERVER . BOARD_DIR . "/" . RES_DIR . $resto . PHP_EXT . '#' . $insertid;
 } else {
     $redirect = PHP_SELF2_ABS;
@@ -359,4 +377,3 @@ if ($deferred) {
 
 
 ?>
-
