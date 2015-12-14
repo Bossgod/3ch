@@ -190,9 +190,9 @@ if (SPOILERS && $spoiler)
 
 if ($moderator && isset($_POST['showCap'])) {
     if ($moderator == 1)
-        $clean['name'] = '<span class="cap moderator" >' . $clean['name'] . ' ## Mod </span>';
+        $clean['name'] = '<span class="cap moderator" >' . $clean['name'] . ' ## Mod </span> <img src="http://3chan.ml/static/mod-icon.png" alt="Mod Icon" title="This user is a 3chan Modorator." style="margin-bottom: -3px;"/> '; 
     if ($moderator == 2)
-        $clean['name'] = '<span class="cap admin" >' . $clean['name'] . ' ## Admin </span>';
+        $clean['name'] = '<span class="cap admin" >' . $clean['name'] . ' ## Admin </span> <img src="http://3chan.ml/static/admin-icon.png" alt="Admin Icon" title="This user is a 3chan Administrator." style="margin-bottom: -3px;"/>'; 
     if ($moderator == 3)
         $clean['name'] = '<span class="cap manager" >' . $clean['name'] . ' ## Manager  </span>';
 }
