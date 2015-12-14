@@ -8,7 +8,7 @@ $S_NOTAGS = 'HTML tags are allowed.';                           //Prints message
 $S_NAME = 'Name';                                               //Describes name field
 $S_EMAIL = 'E-mail';                                            //Describes e-mail field
 $S_SUBJECT = 'Subject';                                         //Describes subject field
-$S_SUBMIT = 'Post';                                             //Describes submit button
+$S_SUBMIT = 'Post';                                           //Describes submit button
 $S_COMMENT = 'Comment';                                         //Describes comment field
 $S_UPLOADFILE = 'File';                                         //Describes file field
 $S_NOFILE = 'No File';                                          //Describes file/no file checkbox
@@ -19,7 +19,7 @@ if (GIF_ONLY)   $temp = '<ul><li>Supported file types are: GIF</li>';
 if (USE_BBCODE) $temp .= '<li><b>BBCode</b> and <b>Markdown</b> are enabled for this board.';
 $S_RULES = $temp . '<li>Maximum file size allowed is '.MAX_KB.' KB.</li>
             <li>Images greater than '.MAX_W.'x'.MAX_H.' pixels will be thumbnailed.</li>
-            <li>Images smaller than '.MIN_W.'x'.MIN_H.' pixels will be refused.</li>
+            <li>Images smaller than '.MIN_W.'x'.MIN_H.' pixels will be refused.</li> 
             <li>Please check out the <a href="http://3chan.ml/rules.php">Rules</a> and <a href="http://3chan.ml/faq.php">FAQ</a> before posting.</li></ul>';  //Prints rules under posting section
 $S_REPORTERR = 'Error: Cannot find reply.';                     //Returns error when a reply (res) cannot be found
 $S_THUMB = '';                                                  //Prints instructions for viewing real source
@@ -36,7 +36,7 @@ $S_PREV = 'Previous';                                           //Defines previo
 $S_FIRSTPG = 'Previous';                                        //Defines previous button
 $S_NEXT = 'Next';                                               //Defines next button
 $S_LASTPG = 'Next';                                             //Defines next button
-$S_FOOT = 'All trademarks and copyrights on this page are owned by their respective parties. Images uploaded are the responsibility of the Poster. Comments are owned by the Poster.'; //Prints footer (removed credits for 3chan legal shit, please)
+$S_FOOT = '- <a href="http://www.2chan.net/" target="_blank">futaba</a> + <a href="http://1chan.net/futallaby/" target="_blank">futallaby</a> + <a href="http://saguaroimgboard.tk/" target="_blank">saguaro 1.3.10</a> -'; //Prints footer (leave these credits)
 $S_RELOAD = 'Return';                                           //Reloads the image board (refresh)
 $S_UPFAIL = 'Error: Upload failed.';                            //Returns error for failed upload (reason: unknown?)
 $S_NOREC = 'Error: Cannot find record.';                        //Returns error when record cannot be found
@@ -76,7 +76,6 @@ $S_BADDELPASS = 'Error: Password incorrect.';                   //Returns error 
 $S_WRONGPASS = 'Error: Username or password invalid.';          //Returns error for wrong password (when trying to access Manager modes)
 $S_RETURNS = 'Return';                                          //Returns to HTML file instead of PHP--thus no log/SQLDB update occurs
 $S_LOGUPD = 'Update';                                           //Updates the log/SQLDB by accessing the PHP file
-$S_POSTFORMBUTTON = "  [ <a href='#' onclick=\"toggle_visibility('adminForm');\" style='color:white;text-align:center;' >Toggle Post Form</a> ]";                 //Might be used
 $S_MANAMODE = "  [ <a href='#' onclick=\"toggle_visibility('adminForm');\" style='color:white;text-align:center;' >Toggle Admin Post Form</a> ]";                                   //Prints heading on top of Manager page
 $S_MANAREPDEL = 'Management Panel';                             //Defines Management Panel radio button--allows the user to view the management panel (overview of all posts)
 $S_MANAPOST = 'Manager Post';                                   //Defines Manager Post radio button--allows the user to post using HTML code in the comment box
@@ -85,8 +84,8 @@ $S_DELLIST = 'Deletion Panel';                                  //Prints sub-hea
 $S_ITDELETES = 'Delete';                                        //Defines for deletion button in Management Panel
 $S_MDRESET = 'Reset';                                           //Defines name for field reset button in Management Panel
 $S_MDONLYPIC = 'File Only';                                     //Sets whether or not to delete only file, or entire post/thread
-$S_MDTABLE1 = '<th></th><th>#</th><th>Reply to</th><th>Time</th><th>Subject</th>'; //Explains field names for Management Panel (Delete?->Subject)
-$S_MDTABLE2 = '<th>Name</th><th>Comment</th><th>Image</th><th>Age</th><th>More</th>'; //Explains names for Management Panel (Name->md5)
+$S_MDTABLE1 = '<th></th><th>#</th><th>Time</th><th>Subject</th>'; //Explains field names for Management Panel (Delete?->Subject)
+$S_MDTABLE2 = '<th>Name</th><th>Comment</th><th>Image</th><th>Host</th><th>Age</th><th>More</th>'; //Explains names for Management Panel (Name->md5)
 $S_RESET = 'Reset';                                             //Sets name for field reset button (global)
 $S_IMGSPACEUSAGE = 'Space used :';                              //Prints space used KB by the board under Management Panel
 $S_CANNOTWRITE = 'Error: Cannot write to directory.<br />';     //Returns error when the script cannot write to the directory, this is used on initial setup--check your chmod (777)
@@ -101,11 +100,22 @@ $S_SQLFAIL = 'Critical SQL problem! <br />';                    //SQL Failure
 $S_QUOTE = 'Quote';
 $S_PERMALINK = 'Permalink thread';
 $S_RESNUM = 'Reply to thread:';
-$S_BANS = 'B&';
+$S_BANS = 'Ban';
 $S_BANS_EXTRA = '';
 $S_CAPFAIL = 'Error: You forgot to solve the CAPTCHA. Please try again.';
 $S_THREADLOCKED = 'You cannot reply to a locked thread.';
 $S_LOGOUT = 'Logout';
 $S_SPOILERS = 'Spoiler Image';
 
+$S_NOPERM = 'Permission denied!';
+$S_NOFILE = '---';
+$S_DELRES = 'Deletion mode: Viewing thread #';
+$S_DELALL = 'Deletion mode: All';
+$S_DELIP = 'Deletion mode: Viewing all posts by IP from #';
+$S_DELOPS = 'Deletion mode: All opening posts (OPs)';
+
+//Introducing...new system error strings!
+$E_REGFAILED = 'Post registration failed!';
+
 ?>
+
