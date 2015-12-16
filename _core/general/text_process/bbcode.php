@@ -16,6 +16,7 @@ require_once("text_process.php");
 class BBCode extends TextProcessor {
     public $processors = [
         "/\[b\](.*?)\[\/b\]/Usi" => "<span style='font-weight:bold'>\\1</span>", //Bold
+        "/\==(.*?)\\==/Usi" => "<b><font size=4 color=darkred>\\1</h4></font></b>", //Redtext
         "/\[u\](.*?)\[\/u\]/Usi" => "<span style='text-decoration: underline'>\\1</span>", //Underline
         "/\[i\](.*?)\[\/i\]/Usi" => "<span style='font-style:italic'>\\1</span>", //Italic
         "/\[color=(\#[0-9a-f]{3,6}|[a-z]+|rgb\([\d,]+\))\](.*?)\[\/color\]/Usi" => "<span style='color:\\1'>\\2</span>", //Color
